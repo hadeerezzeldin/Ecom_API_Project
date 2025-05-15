@@ -6,40 +6,24 @@ using System.Threading.Tasks;
 using Ecom.Core.Interfaces;
 using Ecom.Core.Models;
 using Ecom.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecom.Infrastructure.Repository
 {
-    public class CategoryRepository : IGenericRepository<Category>, ICategoryRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        private readonly AppDbContext context;
+       public readonly AppDbContext context;
 
-        public CategoryRepository( AppDbContext context)
+        public CategoryRepository(AppDbContext context)  :base(context)
         {
-            this.context = context;
+            //this.context = context;
         }
-        public async Task AddAsync(Category entity)
-        {
-                 context.Categories.Add(entity); 
-        }
+      
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Category>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Category> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Category entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<List<Category>> GetAllCategoryWithProducts()
+        //{
+        //    return await context.Categories.Include(c => c.products)
+        //        .ToListAsync();
+        //}
     }
 }

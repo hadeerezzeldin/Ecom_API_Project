@@ -9,37 +9,15 @@ using Ecom.Infrastructure.Data;
 
 namespace Ecom.Infrastructure.Repository
 {
-    public class ProductRepository : IGenericRepository<Product>, IProductRepository
+    public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
         private readonly AppDbContext context;
 
-        public ProductRepository( AppDbContext context)
+        public ProductRepository( AppDbContext context) :base(context)
         {
             this.context = context;
         }
-        public Task AddAsync(Product entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Product>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Product entity)
-        {
-            throw new NotImplementedException();
-        }
+     
+        
     }
 }

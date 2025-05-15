@@ -10,5 +10,6 @@ namespace Ecom.Core.Interfaces
     public interface ICategoryRepository :IGenericRepository<Category>
     {
         //for specific func for category
+        //public Task<List<Category>> GetAllCategoryWithProducts();
     }
 }
