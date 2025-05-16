@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,11 +36,29 @@ namespace Ecom.Infrastructure.Repository
         {
            return await context.Set<T>().ToListAsync();
         }
-
+        public async Task<List<T>> GetAllWithIncludesAsync(params Expression<Func<T , object>>[] includes)
+        {
+          var query =context.Set<T>().AsQueryable();
+            foreach (var item in includes)
+            {
+                query = query.Include(item);
+            }
+            return await query.ToListAsync();
+        }
         public async Task<T> GetByIdAsync(int id)
         {
             var entity = await context.Set<T>().FindAsync(id);
             return entity;
+        }
+      public async Task <T?> GetByIdWithIncludesAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            var query = context.Set<T>().AsQueryable();
+            foreach (var item in includes)
+            {
+                query = query.Include(item);
+            }
+             var result = await query.FirstOrDefaultAsync(x => EF.Property<int>(x, "Id") == id);
+             return result;
         }
 
         public async Task UpdateAsync(T entity)

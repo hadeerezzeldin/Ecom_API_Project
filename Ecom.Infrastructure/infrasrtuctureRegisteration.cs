@@ -5,11 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Ecom.Core.Interfaces;
+using Ecom.Core.Services;
 using Ecom.Infrastructure.Data;
 using Ecom.Infrastructure.Repository;
+using Ecom.Infrastructure.Repository.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace Ecom.Infrastructure
 {
@@ -18,11 +21,15 @@ namespace Ecom.Infrastructure
         public  static  IServiceCollection infrastructureConfigurarion(this IServiceCollection services , IConfiguration configuration)
             {
             //servivce add scoped
-                services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); 
             //services.AddScoped<ICategoryRepository, CategoryRepository>();
             //services.AddScoped<IProductRepository, ProductRepository>();
             //services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IImageManagmentService,ImageManagementService>();   
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"))
+            );
             services.AddDbContext<AppDbContext>(op =>
             {
                 op.UseSqlServer(configuration.GetConnectionString("cs"));

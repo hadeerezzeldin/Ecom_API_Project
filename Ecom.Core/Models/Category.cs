@@ -17,7 +17,7 @@ namespace Ecom.Core.Models
         [MaxLength(100)]
         public string CategoryName { get; set; }
         public string CategoryDescription { get; set; }
-        public ICollection<Product> products { get; set; } = new List<Product>();
+        //public ICollection<Product> products { get; set; } = new List<Product>();
 
     }
 }

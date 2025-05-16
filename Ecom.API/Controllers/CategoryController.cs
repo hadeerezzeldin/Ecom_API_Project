@@ -1,4 +1,5 @@
-﻿using Ecom.Core.DTO.Category;
+﻿using AutoMapper;
+using Ecom.Core.DTO.Category;
 using Ecom.Core.Interfaces;
 using Ecom.Core.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +13,12 @@ namespace Ecom.API.Controllers
     {
         private readonly IUnitOfWork work;
 
-        public CategoryController(IUnitOfWork work)
+        public IMapper mapper { get; }
+
+        public CategoryController(IUnitOfWork work , IMapper mapper)
         {
             this.work = work;
+            this.mapper = mapper;
         }
         [HttpGet]
         [EndpointDescription("Get all categories")]
@@ -58,11 +62,8 @@ namespace Ecom.API.Controllers
         {
             try
             {
-                var category = new Category()
-                {
-                    CategoryName = catDTO.Name,
-                   CategoryDescription = catDTO.Description
-                };
+                var category = mapper.Map<Category>(catDTO);
+               
                 await work.categoryRepository.AddAsync(category);
                 return Ok(category);
             }

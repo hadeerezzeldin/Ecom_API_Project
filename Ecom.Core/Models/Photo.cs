@@ -12,7 +12,7 @@ namespace Ecom.Core.Models
         public int Id { get; set; }
         public string image { get; set; }
         public int productId { get; set; }
-        [ForeignKey(nameof(productId))]
-        public virtual Product Product { get; set; }
+        //[ForeignKey(nameof(productId))]
+        //public virtual Product Product { get; set; }
     }
 }

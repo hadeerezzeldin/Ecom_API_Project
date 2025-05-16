@@ -1,5 +1,10 @@
- using Ecom.Infrastructure;
+using Ecom.Core.Services;
+using Ecom.Infrastructure;
+using Ecom.Infrastructure.Data;
+using Ecom.Infrastructure.Repository.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 namespace Ecom.API
 {
@@ -17,6 +22,16 @@ namespace Ecom.API
             builder.Services.AddOpenApi();
 
              builder.Services.infrastructureConfigurarion(builder.Configuration);
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddSingleton<IFileProvider>(
+             new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"))
+            
+             );
+            builder.Services.AddScoped<IImageManagmentService, ImageManagementService>();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+         options.UseSqlServer(builder.Configuration.GetConnectionString("cs")));
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
