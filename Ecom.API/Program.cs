@@ -1,3 +1,4 @@
+using Ecom.API.Middleware;
 using Ecom.Core.Services;
 using Ecom.Infrastructure;
 using Ecom.Infrastructure.Data;
@@ -15,6 +16,7 @@ namespace Ecom.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -40,6 +42,8 @@ namespace Ecom.API
                 app.MapOpenApi();
              app.UseSwaggerUI(op => op.SwaggerEndpoint("/openapi/v1.json", "v1"));
             }
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
 
