@@ -8,6 +8,7 @@ using Ecom.Core.DTO.Product;
 using Ecom.Core.Interfaces;
 using Ecom.Core.Models;
 using Ecom.Core.Services;
+using Ecom.Core.Sharing;
 using Ecom.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -25,6 +26,56 @@ namespace Ecom.Infrastructure.Repository
             this.context = context;
             this.mapper = mapper;
             this.imageManagmentService = imageManagmentService;
+        }
+
+        public  async Task<IEnumerable<ProductDTO>> GetAllAsync(ProductParams productParams)
+        {
+            var query =  context.Products
+                .Include(p => p.category)
+                .Include(p => p.Photos)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(productParams.Search))
+            {
+                //query = query.Where(p => p.ProductName.ToLower().Contains(productParams.Search.ToLower())
+                //                        ||
+                //                        p.Description.ToLower().Contains(productParams.Search.ToLower())
+                //                        ||
+                //                       p.category.CategoryName.ToLower().Contains(productParams.Search.ToLower()));
+
+
+
+                var searchWords = productParams.Search.ToLower().Split(' ');
+                query = query.Where(p => searchWords.All(word =>
+
+                p.ProductName.ToLower().Contains(word)
+                ||
+                p.Description.ToLower().Contains(word)
+                ||
+                p.category.CategoryName.ToLower().Contains(word)
+                ));
+                                       
+            }
+                if (productParams.categoryId.HasValue)
+            {
+                query = query.Where(p => p.categoryId == productParams.categoryId);
+            }
+            if (!string.IsNullOrEmpty(productParams.sort))
+            {
+                
+                query =  productParams.sort switch
+                {
+                    "asc" => query.OrderBy(p => p.NewPrice),
+                    "desc" => query.OrderByDescending(p => p.NewPrice),
+                    _ => query.OrderBy(p => p.ProductName)
+                };
+            }
+            // pageSize = pageSize > 0 ? pageSize : 10;
+            //pageNumber = pageNumber > 0 ? pageNumber : 1;
+            query = query.Skip(productParams.pageSize * (productParams.pageNumber - 1)).Take(productParams.pageSize);
+            var result =mapper.Map<List<ProductDTO>>(query);
+            return result;
+
         }
 
         public  async Task<bool> AddAsync(AddProductDTO productDTO)
