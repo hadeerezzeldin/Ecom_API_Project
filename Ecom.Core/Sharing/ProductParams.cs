@@ -18,7 +18,8 @@ namespace Ecom.Core.Sharing
         public int pageSize
         {
             get { return _pageSize; }
-           set { _pageSize  = value > MaxPageSize ? MaxPageSize : _pageSize = value; }
+            //set { _pageSize  = value > MaxPageSize ? MaxPageSize : _pageSize = value; }
+            set { _pageSize = (value > MaxPageSize) ? MaxPageSize : value; }
         }
         public int pageNumber { get; set; } = 1;
     }

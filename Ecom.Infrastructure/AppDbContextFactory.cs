@@ -14,9 +14,9 @@ namespace Ecom.Infrastructure
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            // إعداد الكونفيج لقراءة appsettings.json
+          
             var configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory()) // مهم!
+               .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 

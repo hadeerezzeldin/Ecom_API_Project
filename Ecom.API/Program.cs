@@ -54,6 +54,7 @@ namespace Ecom.API
                 app.MapOpenApi();
              app.UseSwaggerUI(op => op.SwaggerEndpoint("/openapi/v1.json", "v1"));
             }
+            app.UseStaticFiles();
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseCors("CorsPolicy");

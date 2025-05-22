@@ -11,5 +11,6 @@ namespace Ecom.Core.Interfaces
         public ICategoryRepository categoryRepository { get; }
         public IProductRepository productRepository { get; }
         public IPhotoRepository photoRepository { get; }
+        public ICartReository cartReository { get; }
     }
 }
