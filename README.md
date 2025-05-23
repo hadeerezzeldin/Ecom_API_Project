@@ -68,7 +68,7 @@ Clone the repository:
 bash
 Copy
 Edit
-git clone https://github.com/yourusername/handmade-ecommerce-api.git
+git clone 
 cd handmade-ecommerce-api
 Configure your .env or appsettings.json file with your database connection, email service, and payment gateway settings.
 
