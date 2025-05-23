@@ -93,22 +93,10 @@ Entity Framework Core (Code First approach)
 
 JWT Authentication
 
-Email services (SMTP, SendGrid, etc.)
+Email services (SMTP)
 
-Payment gateways (Stripe, PayPal)
 
-SignalR or WebSocket for chat functionality
 
-SQL Server or PostgreSQL database
 
-Future Plans
-Build a frontend application using React or Angular.
 
-Support additional payment methods.
-
-Develop an advanced seller dashboard.
-
-Add multilingual support.
-
-Enhance chat experience with real-time notifications.
 
