@@ -4,6 +4,7 @@ using Ecom.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecom.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250523003308_updateUserAddressRelationship")]
+    partial class updateUserAddressRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace Ecom.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -51,6 +57,10 @@ namespace Ecom.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("Addresses");
                 });
@@ -365,6 +375,16 @@ namespace Ecom.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Ecom.Core.Models.Address", b =>
+                {
+                    b.HasOne("Ecom.Core.Models.AppUser", "appUser")
+                        .WithOne("Address")
+                        .HasForeignKey("Ecom.Core.Models.Address", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("appUser");
+                });
+
             modelBuilder.Entity("Ecom.Core.Models.Photo", b =>
                 {
                     b.HasOne("Ecom.Core.Models.Product", null)
@@ -434,6 +454,11 @@ namespace Ecom.Infrastructure.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Ecom.Core.Models.AppUser", b =>
+                {
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Ecom.Core.Models.Product", b =>
